@@ -53,6 +53,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         $username = $row["username"];
                         $hashed_password = $row["password"];
                         if(password_verify($password, $hashed_password)){
+
                             // Password is correct, so start a new session
                             session_start();
                             
@@ -64,11 +65,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             // Redirect user to welcome page
                             header("location: welcome.php");
                         } else{
+
                             // Display an error message if password is not valid
                             $password_err = "The password you entered was not valid.";
                         }
                     }
                 } else{
+
                     // Display an error message if username doesn't exist
                     $username_err = "No account found with that username.";
                 }
@@ -90,17 +93,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Login - Task Tracker</title>
+
+    <!-- Links to CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 350px; padding: 20px; }
-    </style>
+    <link rel="stylesheet" href="assets/style.css">
+
 </head>
 <body>
     <div class="wrapper">
-        <h2>Login</h2>
-        <p>Please fill in your credentials to login.</p>
+        <h2>Login to Task Tracker</h2>
+        <p>Please fill in your username and password to login.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                 <label>Username</label>
