@@ -28,7 +28,7 @@
                         taskname = :taskname, 
                         duedate = :duedate, 
                         status = :status, 
-                        asignee = :assignee, 
+                        assignee = :assignee, 
                         priority = :priority, 
                         notes = :notes, 
                         date = :date 

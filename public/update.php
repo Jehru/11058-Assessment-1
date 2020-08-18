@@ -50,15 +50,12 @@
     Notes: <?php echo $row['notes']; ?>
     <br>
     
-    <a href='update-work.php?id=<?php echo $row['id']; ?>'>Edit</a>
+    <a href='update-task.php?id=<?php echo $row['id']; ?>'>Edit</a>
 </p>
 
 <hr>
 <?php }; //close the foreach
 ?>
-
-
-
 
 
 <?php include "templates/footer.php"; ?>
