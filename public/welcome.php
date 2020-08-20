@@ -67,8 +67,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <main>
         <ul>
             <li><a href="create.php">Add a new Task</a></li>
-            <li><a href="read.php">Find a Task</a></li>
-            <li><a href="update.php">Update an Task</a></li>
+            <!-- <li><a href="read.php">Find a Task</a></li> -->
+            <!-- <li><a href="update.php">Update an Task</a></li> -->
             <li><a href="delete.php">Delete an Task</a></li>
         </ul>
 
@@ -85,39 +85,41 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     // }
 ?>
 
-<div class="info-table">
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Task</th>
-                <th>Due Date</th>
-                <th>Status</th>
-                <th>Asignee</th>
-                <th>Priority</th>
-                <th>Notes</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-    <?php
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        ?>
-            <tr> 
-                <td><?php echo $row["id"];?></td>
-                <td><?php echo $row["taskname"];?></td>
-                <td><?php echo $row["duedate"];?></td>
-                <td><?php echo $row["status"];?></td>
-                <td><?php echo $row["assignee"];?></td>
-                <td><?php echo $row["priority"];?></td>
-                <td><?php echo $row["notes"];?></td>
-                <td></td>
-            </tr>
-        
-      <?php 
-    }
+
+<table class ="info-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Task</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Asignee</th>
+            <th>Priority</th>
+            <th>Notes</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+<?php
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     ?>
-    </table>
-</div>
+        <tr> 
+            <td><?php echo $row["id"];?></td>
+            <td><?php echo $row["taskname"];?></td>
+            <td><?php echo $row["duedate"];?></td>
+            <td><?php echo $row["status"];?></td>
+            <td><?php echo $row["assignee"];?></td>
+            <td><?php echo $row["priority"];?></td>
+            <td><?php echo $row["notes"];?></td>
+            <td> <a href='update-task.php?id=<?php echo $row['id']; ?>'' class="btn btn-info">Edit</td>
+
+            <!-- <td> <a href="delete.php<?php echo $row['id']; ?>" class="btn btn-danger"></td> -->
+        </tr>
+    
+    <?php 
+}
+?>
+</table>
+
 
 <!-- END TESTING -->
 
