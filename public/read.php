@@ -40,9 +40,9 @@ if (isset($_POST['submit'])) {
 <h2>Results</h2>
 
 <?php 
-                // This is a loop, which will loop through each result in the array
-                foreach($result as $row) { 
-            ?>
+    // This is a loop, which will loop through each result in the array
+    foreach($result as $row) { 
+?>
 
 <p>
     ID: <?php echo $row["id"]; ?>

@@ -6,6 +6,9 @@ $host       = "localhost";
 $username   = "root";
 $password   = "";
 $dbname     = "project_1";
+
+// Set DSN datasourse name, set host and database 
+
 $dsn        = "mysql:host=$host;dbname=$dbname";
 $options    = array(
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
@@ -13,6 +16,9 @@ $options    = array(
 
 
 // Attempt to connect to MySQL database 
+// Create PDO instance
+// Also catch any errors if any
+
 try{
   $pdo_connection = new PDO($dsn, $username, $password, $options);
 } catch(PDOException $e){
