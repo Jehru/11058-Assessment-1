@@ -90,3 +90,9 @@ th, td {
     border: 1px solid black;
     padding: 15px;
 }
+
+footer {
+    text-align: center;
+    margin: 50px;
+    background-color: #eea236;
+}

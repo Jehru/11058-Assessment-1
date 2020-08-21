@@ -30,7 +30,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         // $statement->execute();
 
 // --------------------------
-        // TESTING
+        // Allows us to query the database and find all the items in the database
         $stmt = $connection->query('SELECT * FROM tasks');
         
 // ------------------------------------
@@ -43,48 +43,22 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 	}	
 ?>
 
- 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Welcome to Task Tracker</title>
-    
-    <!-- Links to CSS -->
-    <link href="assets/style.css" rel="stylesheet" type="text/css">
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css"> -->
 
-</head>
-<body>
-    <header class="main-header">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to your Task Tracker.</h1>
-        <p>
-            <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
-            <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
-        </p>
-    </header>
+
+ 
+
+
+    <?php include "templates/header.php"; ?>
 
     <main>
         <ul>
             <li><a href="create.php">Add a new Task</a></li>
             <!-- <li><a href="read.php">Find a Task</a></li> -->
             <!-- <li><a href="update.php">Update an Task</a></li> -->
-            <li><a href="delete.php">Delete an Task</a></li>
+            <!-- <li><a href="delete.php">Delete an Task</a></li> -->
         </ul>
 
 <!-- TESTING -->
-
-<?php
-    //  while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-    //     echo $row['taskname'] . '<br>';
-    //     echo $row['duedate'] . '<br>';
-    //     echo $row['status'] . '<br>';
-    //     echo $row['assignee'] . '<br>';
-    //     echo $row['priority'] . '<br>';
-    //     echo $row['notes'] . '<br>' . '<br>';
-    // }
-?>
-
 
 <table class ="info-table">
     <thead>
@@ -96,7 +70,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <th>Asignee</th>
             <th>Priority</th>
             <th>Notes</th>
-            <th>Action</th>
+            <th>Edit</th>
+            <th>Delete</th>
         </tr>
     </thead>
 <?php
@@ -111,8 +86,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <td><?php echo $row["priority"];?></td>
             <td><?php echo $row["notes"];?></td>
             <td> <a href='update-task.php?id=<?php echo $row['id']; ?>'' class="btn btn-info">Edit</td>
-
-            <!-- <td> <a href="delete.php<?php echo $row['id']; ?>" class="btn btn-danger"></td> -->
+            <td> <a href="delete.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</td>
         </tr>
     
     <?php 
@@ -120,9 +94,5 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 ?>
 </table>
 
-
+<?php include "templates/footer.php"; ?>
 <!-- END TESTING -->
-
-    </main>
-    </body>
-    </html>
