@@ -1,11 +1,23 @@
-<?php 
+<?php
+// Starts the session
+session_start();
+ 
+// Check if the user is logged in, if not then redirect him to login page
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+    header("location: login.php");
+    exit;
+}
+?>
 
-    // include the config file that we created last week
+
+<?php 
+    // Includes the config file that sets up the server
+    // Also includes the common.php which adds in commonly used functions
     require "../config.php";
     require "common.php";
 
 
-    // run when submit button is clicked
+    // Run when submit button is clicked
     if (isset($_POST['submit'])) {
         try {
             $connection = new PDO($dsn, $username, $password, $options);  
@@ -39,8 +51,6 @@
             
             //execute sql statement
             $statement->execute($work);
-
-            echo "<p> Edit Successful </p>";
 
         } catch(PDOException $error) {
             echo $sql . "<br>" . $error->getMessage();

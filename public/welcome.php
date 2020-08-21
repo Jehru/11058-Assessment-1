@@ -10,55 +10,33 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 ?>
 
 
-<?php 
-
-// this code will only execute after the submit button is clicked
-	
-    // include the config file that we created before
+<?php 	
+    // include the config file that logs in to the database and creates a PDO intstnace
     require "../config.php"; 
     
-    // this is called a try/catch statement 
+    //
 	try {
         // FIRST: Connect to the database
         $connection = new PDO($dsn, $username, $password, $options);
-		
-        // SECOND: Create the SQL 
-        // $sql = "SELECT * FROM tasks";
-        
-        // THIRD: Prepare the SQL
-        // $statement = $connection->prepare($sql);
-        // $statement->execute();
 
-// --------------------------
         // Allows us to query the database and find all the items in the database
         $stmt = $connection->query('SELECT * FROM tasks');
-        
-// ------------------------------------
-        // FOURTH: Put it into a $result object that we can access in the page
-        // $result = $statement->fetchAll();
+
 
 	} catch(PDOException $error) {
         // if there is an error, tell us what it is
-		echo $sql . "<br>" . $error->getMessage();
+		echo $stmt . "<br>" . $error->getMessage();
 	}	
 ?>
 
 
 
- 
 
-
-    <?php include "templates/header.php"; ?>
+<?php include "templates/header.php"; ?>
 
     <main>
-        <ul>
-            <li><a href="create.php">Add a new Task</a></li>
-            <!-- <li><a href="read.php">Find a Task</a></li> -->
-            <!-- <li><a href="update.php">Update an Task</a></li> -->
-            <!-- <li><a href="delete.php">Delete an Task</a></li> -->
-        </ul>
-
-<!-- TESTING -->
+    
+    <a href="create.php" class="btn btn-success">Add New</a>
 
 <table class ="info-table">
     <thead>
@@ -95,4 +73,3 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 </table>
 
 <?php include "templates/footer.php"; ?>
-<!-- END TESTING -->
