@@ -32,29 +32,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 
 
-<?php //include "templates/header.php"; ?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Welcome to Task Tracker</title>
-    
-    <!-- Links to CSS -->
-    <link href="assets/style.css" rel="stylesheet" type="text/css">
-
-</head>
-<body>
-    <header class="main-header">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b>. Welcome to your Task Tracker.</h1>
-        <a href ="welcome.php">Home</a>
-        <p>
-            <a href="reset-password.php" class="btn btn-warning">Reset Your Password</a>
-            <a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a>
-        </p>
-    </header>
-
+<?php include "templates/header.php"; ?>
     <main>
     
     <a href="create.php" class="btn btn-success">Add New</a>
@@ -93,15 +71,4 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 ?>
 </table>
 
-<?php //include "templates/footer.php"; ?>
-
-</main>
-<footer>
-
-<p> This site created by Faculty of Arts and Design Students at the University of Canberra </p>
-
-</footer>
-
-</body>
-
-</html>
+<?php include "templates/footer.php"; ?>
