@@ -49,34 +49,40 @@ if (isset($_POST['submit'])) {
 
 <?php include "templates/header.php"; ?>
 
+<main>
+
 <h2>Add a Task</h2>
 
 <?php if (isset($_POST['submit']) && $statement) { ?>
 <p>Task successfully added.</p>
-<?php } ?>
+<?php 
+// Send the user back to the welcome page after task successful after 1 seconds
+    sleep(1);
+    header("location: welcome.php");
+}?>
 
 <!--form to collect data for each artwork-->
 
-<form method="post">
+<form method="post" class="create-update-forms">
     <label for="taskname">Task Name</label>
-    <input type="text" name="taskname" id="taskname">
+    <input class="create-update-input" type="text" name="taskname" id="taskname">
 
     <label for="duedate">Due Date</label>
-    <input type="text" name="duedate" id="duedate">
+    <input class="create-update-input" type="text" name="duedate" id="duedate">
 
     <label for="status">Status</label>
-    <input type="text" name="status" id="status">
+    <input class="create-update-input" type="text" name="status" id="status">
 
     <label for="assignee">Assignee</label>
-    <input type="text" name="assignee" id="assignee">
+    <input class="create-update-input" type="text" name="assignee" id="assignee">
 
     <label for="priority">Priority</label>
-    <input type="text" name="priority" id="priority">
+    <input class="create-update-input" type="text" name="priority" id="priority">
 
     <label for="notes">Notes</label>
-    <input type="text" name="notes" id="notes">
+    <input class="create-update-input" type="text" name="notes" id="notes">
 
-    <input type="submit" name="submit" value="Submit">
+    <input class="create-update-submit" type="submit" name="submit" value="Submit">
 
 </form>
 

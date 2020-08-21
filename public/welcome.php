@@ -22,7 +22,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         // Allows us to query the database and find all the items in the database
         $stmt = $connection->query('SELECT * FROM tasks');
 
-
 	} catch(PDOException $error) {
         // if there is an error, tell us what it is
 		echo $stmt . "<br>" . $error->getMessage();

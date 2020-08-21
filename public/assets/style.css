@@ -4,7 +4,7 @@ html {
 
 body { 
     position: relative;
-    margin: 0;
+    margin: 0 auto;
 }
 
 
@@ -21,6 +21,10 @@ a {
 
 h1 {
     font-size: 36px;
+    font-weight: normal;
+}
+
+h2 {
     font-weight: normal;
 }
 
@@ -101,3 +105,38 @@ footer {
     text-align: center;
     margin: 50px;
 }
+
+
+/* Forms in Create & Edit page */
+
+
+.create-update-forms {
+    margin: 0 30%;
+}
+
+.create-update-input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+
+  /* Changing the Submit button */
+
+  .create-update-submit {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+.create-update-submit:hover {
+    background-color: #45a049;
+  }

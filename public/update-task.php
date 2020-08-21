@@ -52,6 +52,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             //execute sql statement
             $statement->execute($work);
 
+
         } catch(PDOException $error) {
             echo $sql . "<br>" . $error->getMessage();
         }
@@ -100,43 +101,46 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <?php if (isset($_POST['submit']) && $statement) : ?>
 	<p>Work successfully updated.</p>
-<?php endif; ?>
+<?php
+    // Sleep 1 seconds and then send to welcome page and end the if statement
+    sleep(1);
+    header("location: welcome.php"); 
+    endif; 
+?>
+<main>
 
 <h2>Edit a work</h2>
 
-<form method="post">
+<form method="post" class="create-update-forms">
     
     <label for="id">ID</label>
-    <input type="text" name="id" id="id" value="<?php echo escape($work['id']); ?>" >
+    <input class="create-update-input" type="text" name="id" id="id" value="<?php echo escape($work['id']); ?>" >
     
     <label for="taskname">Task Name</label>
-    <input type="text" name="taskname" id="taskname" value="<?php echo escape($work['taskname']); ?>">
+    <input class="create-update-input" type="text" name="taskname" id="taskname" value="<?php echo escape($work['taskname']); ?>">
 
     <label for="duedate">Due Date</label>
-    <input type="text" name="duedate" id="duedate" value="<?php echo escape($work['duedate']); ?>">
+    <input class="create-update-input" type="text" name="duedate" id="duedate" value="<?php echo escape($work['duedate']); ?>">
 
     <label for="status">Status</label>
-    <input type="text" name="status" id="status" value="<?php echo escape($work['status']); ?>">
+    <input class="create-update-input" type="text" name="status" id="status" value="<?php echo escape($work['status']); ?>">
 
     <label for="assignee">Assignee</label>
-    <input type="text" name="assignee" id="assignee" value="<?php echo escape($work['assignee']); ?>">
+    <input class="create-update-input" type="text" name="assignee" id="assignee" value="<?php echo escape($work['assignee']); ?>">
     
     <label for="priority">Priority</label>
-    <input type="text" name="priority" id="priority" value="<?php echo escape($work['priority']); ?>">
+    <input class="create-update-input" type="text" name="priority" id="priority" value="<?php echo escape($work['priority']); ?>">
     
     <label for="notes">Notes</label>
-    <input type="text" name="notes" id="notes" value="<?php echo escape($work['notes']); ?>">
+    <input class="create-update-input" type="text" name="notes" id="notes" value="<?php echo escape($work['notes']); ?>">
     
 
     <label for="date">Work Date</label>
-    <input type="text" name="date" id="date" value="<?php echo escape($work['date']); ?>">
+    <input class="create-update-input" type="text" name="date" id="date" value="<?php echo escape($work['date']); ?>">
 
-    <input type="submit" name="submit" value="Save">
+    <input class="create-update-submit" type="submit" name="submit" value="Save">
 
 </form>
-
-
-
 
 
 <?php include "templates/footer.php"; ?>
