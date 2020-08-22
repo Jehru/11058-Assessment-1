@@ -29,13 +29,91 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 ?>
 
 
+<!-- TESTING CREATE  -->
+
+<?php 
+
+if (isset($_POST['submit'])) {
+	
+
+    
+    // this is called a try/catch statement 
+	try {
+		
+        // SECOND: Get the contents of the form and store it in an array
+        $new_task = array( 
+            "taskname" => $_POST['taskname'], 
+            "duedate" => $_POST['duedate'],
+            "status" => $_POST['status'],
+            "assignee" => $_POST['assignee'], 
+            "priority" => $_POST['priority'], 
+            "notes" => $_POST['notes'], 
+        );
+        
+        // THIRD: Turn the array into a SQL statement
+        $sql = "INSERT INTO tasks (taskname, duedate, status, assignee, priority, notes) VALUES (:taskname, :duedate, :status, :assignee, :priority, :notes)";        
+        
+        // FOURTH: Now write the SQL to the database
+        $statement = $connection->prepare($sql);
+        $statement->execute($new_task);
+
+        // Updates the table with the new data
+        $stmt = $connection->query('SELECT * FROM tasks');
+
+	} catch(PDOException $error) {
+        // if there is an error, tell us what it is
+		echo $sql . "<br>" . $error->getMessage();
+	}	
+}
+
+?>
+
 
 
 <?php include "templates/header.php"; ?>
-    <main>
-    
-    <a href="create.php" class="btn btn-success">Add New</a>
 
+<main>
+    
+<!-- <a href="create.php" class="btn btn-success">Add New</a> -->
+
+    
+<!-- TESTING -->
+<form method="post" class="welcome-forms">
+    <label for="taskname">Task Name</label>
+    <input class="welcome-input" type="text" name="taskname" id="taskname">
+
+    <label for="duedate">Due Date</label>
+    <input class="welcome-input" type="text" name="duedate" id="duedate">
+
+    <br>
+
+    <label for="status">Status</label>
+    <input class="welcome-input" type="text" name="status" id="status">
+
+    <label for="assignee">Assignee</label>
+    <input class="welcome-input" type="text" name="assignee" id="assignee">
+
+    <br>
+
+    <label for="priority">Priority</label>
+    <input class="welcome-input" type="text" name="priority" id="priority">
+
+    <label for="notes">Notes</label>
+    <input class="welcome-input" type="text" name="notes" id="notes">
+
+    <br>
+
+    <input class="create-update-submit" type="submit" name="submit" value="Submit">
+
+</form>
+
+
+<?php if (isset($_POST['submit']) && $statement) { ?>
+<p>Task successfully added.</p>
+<?php }?>
+
+
+<!-- TABLE -->
 <table class ="info-table">
     <thead>
         <tr>
