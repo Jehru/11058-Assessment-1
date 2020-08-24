@@ -9,7 +9,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
 ?>
 
-
 <?php 
     // Includes the config file that sets up the server
     // Also includes the common.php which adds in commonly used functions

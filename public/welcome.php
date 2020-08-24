@@ -7,11 +7,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
+
 ?>
 
 
 <?php 	
-    // include the config file that logs in to the database and creates a PDO intstnace
+    // include the config file that logs in to the database and creates a PDO instance
     require "../config.php"; 
     
     //
@@ -20,7 +21,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         $connection = new PDO($dsn, $username, $password, $options);
 
         // Allows us to query the database and find all the items in the database
-        $stmt = $connection->query('SELECT * FROM tasks');
+        $stmt = $connection->query("SELECT * FROM tasks WHERE userid=:id");
+
+        // $stmt->bindValue(':id', $id);
+        // $stmt->bindValue(':userid', $_SESSION["id"]);
+
+        // $stmt = $pdo->query("SELECT * FROM users WHERE userid=?");
+        $stmt->execute(['id' => $_SESSION['id']]);
+
+        // $stmt->execute($_SESSION['id']);
+
 
 	} catch(PDOException $error) {
         // if there is an error, tell us what it is
@@ -33,15 +43,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <?php 
 
+// If user posts new information using submit
 if (isset($_POST['submit'])) {
 	
-
-    
     // this is called a try/catch statement 
 	try {
 		
         // SECOND: Get the contents of the form and store it in an array
         $new_task = array( 
+            "userid" => $_SESSION["id"],
             "taskname" => $_POST['taskname'], 
             "duedate" => $_POST['duedate'],
             "status" => $_POST['status'],
@@ -51,14 +61,16 @@ if (isset($_POST['submit'])) {
         );
         
         // THIRD: Turn the array into a SQL statement
-        $sql = "INSERT INTO tasks (taskname, duedate, status, assignee, priority, notes) VALUES (:taskname, :duedate, :status, :assignee, :priority, :notes)";        
+        $sql = "INSERT INTO tasks (userid, taskname, duedate, status, assignee, priority, notes) VALUES (:userid, :taskname, :duedate, :status, :assignee, :priority, :notes)";        
         
         // FOURTH: Now write the SQL to the database
         $statement = $connection->prepare($sql);
         $statement->execute($new_task);
 
         // Updates the table with the new data
-        $stmt = $connection->query('SELECT * FROM tasks');
+        // $stmt = $connection->query('SELECT * FROM tasks, users WHERE tasks.:userid=users.:id');
+        $stmt = $connection->query("SELECT * FROM tasks WHERE userid=:id");
+
 
 	} catch(PDOException $error) {
         // if there is an error, tell us what it is
@@ -117,7 +129,7 @@ if (isset($_POST['submit'])) {
 <table class ="info-table">
     <thead>
         <tr>
-            <th>ID</th>
+            <th>User ID</th>
             <th>Task</th>
             <th>Due Date</th>
             <th>Status</th>
@@ -130,16 +142,23 @@ if (isset($_POST['submit'])) {
     </thead>
 <?php
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+        // if ($row['id'] == $_POST['id'] && 
+        // $row['taskname'] == $_POST['taskname'] && 
+        // ){
+
+        // }
+
     ?>
         <tr> 
-            <td><?php echo $row["id"];?></td>
+            <td><?php echo $row["userid"];?></td>
             <td><?php echo $row["taskname"];?></td>
             <td><?php echo $row["duedate"];?></td>
             <td><?php echo $row["status"];?></td>
             <td><?php echo $row["assignee"];?></td>
             <td><?php echo $row["priority"];?></td>
             <td><?php echo $row["notes"];?></td>
-            <td> <a href='update-task.php?id=<?php echo $row['id']; ?>'' class="btn btn-info">Edit</td>
+            <td> <a href='update-task.php?id=<?php echo $row['id']; ?>' class="btn btn-info">Edit</td>
             <td> <a href="delete.php?id=<?php echo $row['id']; ?>" class="btn btn-danger">Delete</td>
         </tr>
     
