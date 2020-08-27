@@ -24,8 +24,10 @@ h1 {
     font-weight: normal;
 }
 
-h2 {
-    font-weight: normal;
+h2, h3 {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
 }
 
 b {
@@ -188,7 +190,7 @@ label {
 /* Changing the Submit button */
 
 .create-update-submit {
-    width: 100%;
+    width: 60%;
     background-color: #4CAF50;
     color: white;
     padding: 14px 20px;
@@ -200,3 +202,22 @@ label {
 .create-update-submit:hover {
     background-color: #45a049;
   }
+
+  /* Select Priority Tags */
+  select option {
+    color: #fff;
+  }
+  
+  select option[value="low"] {
+    background: #86dd86 ;
+  }
+  
+  select option[value="medium"] {
+    background: #E0AC69;
+  }
+  
+  select option[value="high"] {
+    background: #fc4c4e ;
+  }
+  
+  

@@ -23,27 +23,26 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             
             //grab elements from form and set as varaible
             $work =[
-              "id"         => $_POST['id'],
-              "taskname" => $_POST['taskname'],
-              "duedate"  => $_POST['duedate'],
-              "status"   => $_POST['status'],
-              "assignee"   => $_POST['assignee'],
-              "priority"   => $_POST['priority'],
-              "notes"   => $_POST['notes'],
-              "date"   => $_POST['date'],
+                // "userid"   => $_SESSION['id'],
+                "taskid"   => $_POST['taskid'],
+                "taskname" => $_POST['taskname'],
+                "duedate"  => $_POST['duedate'],
+                "status"   => $_POST['status'],
+                "priority" => $_POST['priority'],
+                "notes"    => $_POST['notes'],
+                "date"     => $_POST['date'],
             ];
             
             // create SQL statement
             $sql = "UPDATE `tasks` 
-                    SET id = :id, 
+                    SET taskid = :taskid, 
                         taskname = :taskname, 
                         duedate = :duedate, 
                         status = :status, 
-                        assignee = :assignee, 
                         priority = :priority, 
                         notes = :notes, 
                         date = :date 
-                    WHERE id = :id";
+                    WHERE taskid = :taskid";
 
             //prepare sql statement
             $statement = $connection->prepare($sql);
@@ -59,24 +58,25 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
     // GET data from DB
     //simple if/else statement to check if the id is available
-    if (isset($_GET['id'])) {
+    if (isset($_GET['taskid'])) {
         //yes the id exists 
-        
+
         try {
             // standard db connection
             $connection = new PDO($dsn, $username, $password, $options);
             
-            // set if as variable
-            $id = $_GET['id'];
+            // set taskid as variable
+            $taskid = $_GET['taskid'];
             
             //select statement to get the right data
-            $sql = "SELECT * FROM tasks WHERE id = :id";
-            
+            // $sql = "SELECT * FROM tasks WHERE taskid = :taskid";
+            $sql = "SELECT * FROM tasks WHERE userid=" . $_SESSION['id'];
+
             // prepare the connection
             $statement = $connection->prepare($sql);
             
             //bind the id to the PDO id
-            $statement->bindValue(':id', $id);
+            $statement->bindValue(':taskid', $taskid);
             
             // now execute the statement
             $statement->execute();
@@ -89,7 +89,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         }
     } else {
         // no id, show error
-        echo "No id - something went wrong";
+        echo "No Task id - something went wrong";
         //exit;
     };
 
@@ -99,7 +99,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <?php include "templates/header.php"; ?>
 
 <?php if (isset($_POST['submit']) && $statement) : ?>
-	<p>Work successfully updated.</p>
+	<p>Task successfully updated.</p>
 <?php
     // Sleep 1 seconds and then send to welcome page and end the if statement
     sleep(1);
@@ -111,9 +111,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <h2>Edit a work</h2>
 
 <form method="post" class="create-update-forms">
-    
-    <label for="id">ID</label>
-    <input class="create-update-input" type="text" name="id" id="id" value="<?php echo escape($work['id']); ?>" >
+
+    <label for="taskid">Task ID</label>
+    <input class="create-update-input" type="text" name="taskid" id="taskid" value="<?php echo escape($work['taskid']); ?>" >
     
     <label for="taskname">Task Name</label>
     <input class="create-update-input" type="text" name="taskname" id="taskname" value="<?php echo escape($work['taskname']); ?>">
@@ -123,9 +123,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
     <label for="status">Status</label>
     <input class="create-update-input" type="text" name="status" id="status" value="<?php echo escape($work['status']); ?>">
-
-    <label for="assignee">Assignee</label>
-    <input class="create-update-input" type="text" name="assignee" id="assignee" value="<?php echo escape($work['assignee']); ?>">
     
     <label for="priority">Priority</label>
     <input class="create-update-input" type="text" name="priority" id="priority" value="<?php echo escape($work['priority']); ?>">
@@ -134,7 +131,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <input class="create-update-input" type="text" name="notes" id="notes" value="<?php echo escape($work['notes']); ?>">
     
 
-    <label for="date">Work Date</label>
+    <label for="date">Input Date</label>
     <input class="create-update-input" type="text" name="date" id="date" value="<?php echo escape($work['date']); ?>">
 
     <input class="create-update-submit" type="submit" name="submit" value="Save">

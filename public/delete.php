@@ -15,24 +15,24 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     require "../config.php";
     require "common.php";
 
-    // This code will only run if the delete button is clicked
-    if (isset($_GET["id"])) {
+    // This code will only run if the delete  is clicked
+    if (isset($_GET["taskid"])) {
 	    // this is called a try/catch statement 
         try {
             // define database connection
             $connection = new PDO($dsn, $username, $password, $options);
             
             // set id variable
-            $id = $_GET["id"];
+            $taskid = $_GET["taskid"];
             
             // Create the SQL 
-            $sql = "DELETE FROM tasks WHERE id = :id";
+            $sql = "DELETE FROM tasks WHERE taskid = :taskid";
 
             // Prepare the SQL
             $statement = $connection->prepare($sql);
             
             // bind the id to the PDO
-            $statement->bindValue(':id', $id);
+            $statement->bindValue(':taskid', $taskid);
             
             // execute the statement
             $statement->execute();
@@ -51,7 +51,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         $connection = new PDO($dsn, $username, $password, $options);
 		
         // SECOND: Create the SQL 
-        $sql = "SELECT * FROM tasks";
+        $sql = "SELECT * FROM tasks WHERE userid=" . $_SESSION['id'];
         
         // THIRD: Prepare the SQL
         $statement = $connection->prepare($sql);
@@ -76,7 +76,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <?php foreach($result as $row) { ?>
 
 <p>
-    ID: <?php echo escape($row['id']); ?>
+    User ID: <?php echo escape($row['userid']); ?>
+    <br> 
+    Task ID: <?php echo escape($row['taskid']); ?>
     <br> 
     Task Name: <?php echo $row['taskname']; ?>
     <br> 
@@ -84,14 +86,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <br>
     Status: <?php echo $row['status']; ?>
     <br> 
-    Assignee: <?php echo $row['assignee']; ?>
-    <br>
     Priority: <?php echo $row['priority']; ?>
     <br>
     Notes: <?php echo $row['notes']; ?>
     <br>
 
-    <a href='delete.php?id=<?php echo $row['id']; ?>'>Delete</a>
+    <a href='delete.php?taskid=<?php echo $row['taskid']; ?>'>Delete</a>
 </p>
 
 <hr>
