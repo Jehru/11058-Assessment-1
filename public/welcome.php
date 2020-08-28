@@ -98,8 +98,7 @@ if (isset($_POST['submit'])) {
     
 <!-- <a href="create.php" class="btn btn-success">Add New</a> -->
 
-    
-<!-- TESTING -->
+<!-- Adding In data -->
 <form method="post" class="welcome-forms">
     <label for="taskname">Task Name</label>
     <input class="welcome-input" type="text" name="taskname" id="taskname">
@@ -117,7 +116,7 @@ if (isset($_POST['submit'])) {
         <select class="welcome-input" name="priority" id="priority">
             <option value="low">Low</option>
             <option value="medium">Medium</option>
-            <option value="high">High🔥 &#U+1F525</option>
+            <option value="high">High🔥</option>
         </select>
 
     <br>
