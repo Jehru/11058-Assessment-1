@@ -1,22 +1,6 @@
-html {
-    font: 14px sans-serif; 
-}
-
+/* GENERAL  */
 body { 
     position: relative;
-    margin: 0 auto;
-}
-
-
-a:active,
-a:hover {
-    outline: 0;
-    text-decoration: underline;
-}
-
-a {
-    color: #337ab7;
-    text-decoration: none;
 }
 
 h1 {
@@ -31,57 +15,7 @@ h2, h3 {
     margin-bottom: 40px;
 }
 
-.card {
-    font-size: 15px;
-    padding: 6px;
-}
-
-
-b {
-    font-weight: bold;
-}
-
-/* BUTTONS */
-.btn {
-    display: inline-block;
-    padding: 6px 12px;
-    font-weight: normal;
-    text-align: center;
-    cursor: pointer;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
-
-.btn-warning {
-    color: #fff;
-    background-color: #f0ad4e;
-    border-color: #eea236;
-}
-
-.btn-danger {
-    color: #fff;
-    background-color: #d9534f;
-    border-color: #d43f3a;
-}
-
-.btn-info {
-    color: #fff;
-    background-color: #5bc0de;
-    border-color: #46b8da;
-}
-
-.btn-success {
-color: #fff;
-background-color: #5cb85c;
-border-color: #4cae4c;
-}
-
-
-
-/* ADD IN HOVER PSEDUOCLASSES */
-
-
-/* OTHER */
+/* Used on the login, register and reset pages */
 .wrapper { 
     width: 30%;
     position: absolute;
@@ -90,29 +24,15 @@ border-color: #4cae4c;
     transform: translate(-50%, 50%);
 }
 
+/* Wrapper Update. Used in the update page */
 .wrapper-update { 
     margin: 0 30%;
 }
 
+/* Used in the header for the welcome and the update page */
 .main-header {
     margin: 90px auto;
     text-align: center;
-}
-
-    #home{
-        margin: 20px;
-    }
-
-.info-table{
-    border-collapse: collapse;
-    margin: 0 auto;
-
-}
-
-th, td {
-    border-bottom: 1px solid #ddd;
-    /* border: 1px solid black; */
-    padding: 15px;
 }
 
 footer {
@@ -120,80 +40,17 @@ footer {
     margin: 50px;
 }
 
-
-/* Forms in Create & Edit page */
-
-
-.update-forms {
-    margin: 0 30%;
+/* Table */
+th, td {
+    border-bottom: 1px solid #ddd;
+    padding: 15px;
 }
 
-.update-input {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-  
-
-/* Forms in Welcome page */
-
-
-.welcome-forms {
-    /* display: inline-block; */
-    /* background-color: lightgrey; */
-    margin: 50px 20%;
-    /* padding: 30px; */
-}
-
-.welcome-input {
-    /* background-color: red; */
-    width: 40%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.welcome-input:focus {
-    border: 3px solid #555;
-  }
-
-/* Login/Registation Page Form */
-
-.form-group {
-    margin-bottom: 15px;
-    border: 1px;
-}
-
-.btn-primary {
+/* Button */
+.btn-warning {
     color: #fff;
-    background-color: #337ab7;
-    border-color: #2e6da4;
-}
-
-.help-block{
-    color: red;
-}
-
-.form-control {
-    display: block;
-    width: 100%;
-    height: 34px;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    background-color: #f0ad4e;
+    border-color: #eea236;
 }
 
 label {
@@ -201,37 +58,7 @@ label {
     font-weight: bold;
 }
 
-/* Changing the Submit button */
-
-.create-submit {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-.create-submit:hover {
-    background-color: #45a049;
-  }
-
-
-.update-submit {
-    width: 60%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 0 20%;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-.update-submit:hover {
-    background-color: #45a049;
-  }
-
-  /* Select Priority Tags */
+/* Select priority tags and colours */
 select option {
     color: #fff;
   }
@@ -247,15 +74,64 @@ select option {
   select option[value="High"] {
     background: #fc4c4e ;
   }
-  
+
+
+
+
+/* WELCOME PAGE */
+/* Welcome page table, set it in the center */
+.info-table{
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+.welcome-forms {
+    margin: 50px 20%;
+}
+
+.welcome-input:focus {
+    border: 3px solid #555;
+}
+
+.create-submit {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.create-submit:hover {
+    background-color: #45a049;
+}
+
+/* Search box */
 .search-box {
     margin: 0 20%;
 }
 
-
-.search-box input{
+.search-box input {
     display: inline-block;
     border: 1px solid #ddd; /* Add a grey border */
     margin-bottom: 12px; /* Add some space below the input */
-  }
+}
   
+
+/* UPDATE PAGE */
+
+.update-submit {
+    width: 60%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 0 20%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+    .update-submit:hover {
+        background-color: #45a049;
+    }
+
+

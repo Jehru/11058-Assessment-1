@@ -165,7 +165,7 @@ if (isset($_POST['submit'])) {
     <!-- Search Function -->
     <!-- Hides the result unless the user starts typing into the search bar -->
     <div class="search-box">
-        <input type="text" autocomplete="off" placeholder="Search All Tasks" />
+        <input type="text" autocomplete="off" placeholder="Search for Task" />
         <div class="result"></div>
     </div>
 

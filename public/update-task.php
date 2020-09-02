@@ -148,12 +148,12 @@ if (isset($_GET['taskid'])) {
 
     <div class="form-group">
         <label for="notes">Notes</label>
-        <input class="update-input" type="text" name="notes" id="notes" value="<?php echo escape($work['notes']); ?>">
+        <input class="form-control" type="text" name="notes" id="notes" value="<?php echo escape($work['notes']); ?>">
     </div>
 
     <div class="form-group">
         <label for="date">Input Date</label>
-        <input class="update-input" type="text" name="date" id="date" value="<?php echo escape($work['date']); ?>">
+        <input class="form-control" type="text" name="date" id="date" value="<?php echo escape($work['date']); ?>">
     </div>
 
     <!-- Submit button -->
