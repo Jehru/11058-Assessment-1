@@ -2,114 +2,104 @@
 // Initialize the session
 session_start();
  
-// Check if the user is logged in, if not then redirect him to login page
+// Check if the user is logged in, if not then redirect them to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: login.php");
     exit;
 }
 
-?>
+// Include the config file that logs in to the database and creates a PDO instance
+require "../config.php"; 
+require "common.php";
+
+// Creating a varible for the users session ID
+$newid = $_SESSION['id'];
+// Create an empty variable which will be used for the success messages
+$msgSuccess = '';
 
 
-<!-- Sets all the required files and checks to UPDATES the information in the forms -->
-<?php 	
-    // include the config file that logs in to the database and creates a PDO instance
-    require "../config.php"; 
-    
-    //Setting a variable called newid which is based on the session id
-    $newid = $_SESSION['id'];
-    $msgSuccess = '';
+// READS the database
 
-
-	try {
-        // FIRST: Connect to the database
+    try {
+        // Create a PDO connection which connects to the database
         $connection = new PDO($dsn, $username, $password, $options);
 
-        // Allows us to query the database and find all the items in the database
-        // This however only works for that users data, data input by other users will not show
+        // Find all the tasks in the database and order by prioirtyindex (high, medium low)
+        // However only show the information for the user who is logged on
         $stmt = $connection->query("SELECT * FROM tasks WHERE userid='$newid' ORDER BY priorityindex");
 
-        // Executing the id 
-        $stmt->execute(['id' => $_SESSION['id']]);
+        // Executes the id.
+        // Assigns userid to sessionid
+        $stmt->execute(['userid' => $_SESSION['id']]);
+        // $stmt->bindParam(':userid', $newid);
 
-
-        /* Riley code 
-        $sql = "SELECT * FROM tasks WHERE userid=" . $_SESSION['id'];
-        
-        $stmt = $connection->prepare($sql);
-        $stmt->execute();
-        */
-
-	} catch(PDOException $error) {
+    } catch(PDOException $error) {
         // if there is an error, tell us what it is
-		echo $stmt . "<br>" . $error->getMessage();
-	}	
-?>
+        echo $stmt . "<br>" . $error->getMessage();
+    }	
 
+// CREATES new data (if user clicks submit)
 
-<!-- Creating New Data  -->
-
-<?php 
-
-// If user posts new information using submit
-if (isset($_POST['submit'])) {
-	
-    // this is called a try/catch statement 
-	try {
+    if (isset($_POST['submit'])) {
         
-        $postpriority = $_POST['priority'];
+        // Try and upload the data found in the forms
+        try {
+            
+            // Create a variable called postpriority which is a numerical value for High, Medium or Low which is used to create a hierarchy 
+            $postpriority = $_POST['priority'];
 
-        if($postpriority==="High"){
-            $priorityindex = 1;
-        } else if($postpriority==="Medium"){
-            $priorityindex = 2;
-        } else {
-            $priorityindex = 3;
-        };
+            // Associates high priority with a priority index of 1, medium priority with 2 and low with 3. This is used to create an order.
+            if($postpriority==="High"){
+                $priorityindex = 1;
+            } else if($postpriority==="Medium"){
+                $priorityindex = 2;
+            } else {
+                $priorityindex = 3;
+            };
 
-        // SECOND: Get the contents of the form and store it in an array
-        $new_task = array( 
-            "userid" => $_SESSION["id"],
-            // Dont need Taskid as its automatically incremented
-            // "taskid" => $_POST["taskid"],
-            "taskname" => $_POST['taskname'], 
-            "duedate" => $_POST['duedate'],
-            "status" => $_POST['status'],
-            "priority" => $_POST['priority'], 
-            "priorityindex" => $priorityindex, 
-            "notes" => $_POST['notes'], 
-        );
-        
+            // SECOND: Get the contents of the form and store it in an array
+            $new_task = array( 
+                "userid" => $_SESSION["id"],
+                // Dont need Taskid as its automatically incremented
+                // "taskid" => $_POST["taskid"],
+                "taskname" => $_POST['taskname'], 
+                "duedate" => $_POST['duedate'],
+                "status" => $_POST['status'],
+                "priority" => $_POST['priority'], 
+                "priorityindex" => $priorityindex, 
+                "notes" => $_POST['notes'], 
+            );
+            
 
-        // THIRD: Turn the array into a SQL statement
-        $sql = "INSERT INTO tasks (userid, taskname, duedate, status, priority, priorityindex, notes) VALUES (:userid, :taskname, :duedate, :status, :priority, :priorityindex, :notes)";        
-        
-        // FOURTH: Now write the SQL to the database
-        $statement = $connection->prepare($sql);
-        $statement->execute($new_task);
+            // THIRD: Turn the array into a SQL statement
+            $sql = "INSERT INTO tasks (userid, taskname, duedate, status, priority, priorityindex, notes) VALUES (:userid, :taskname, :duedate, :status, :priority, :priorityindex, :notes)";        
+            
+            // FOURTH: Now write the SQL to the database
+            $statement = $connection->prepare($sql);
+            $statement->execute($new_task);
 
-        // Updates the table with the new data
-        // $stmt = $connection->query('SELECT * FROM tasks, users WHERE tasks.:userid=users.:id');
-        // $stmt = $connection->query("SELECT * FROM tasks WHERE userid=:id");
+            // Updates the table with the new data
+            // $stmt = $connection->query('SELECT * FROM tasks, users WHERE tasks.:userid=users.:id');
+            // $stmt = $connection->query("SELECT * FROM tasks WHERE userid=:id");
 
-        $msgSuccess = "<script> $(function(success) {
-                     alertify.set('notifier','position', 'bottom-right');
-                     alertify.success('Successfully Submitted', 'success', 5 + alertify.get('notifier','position'));
-                 }); </script>";
+            $msgSuccess = "<script> $(function(success) {
+                        alertify.set('notifier','position', 'bottom-right');
+                        alertify.success('Successfully Submitted', 'success', 5 + alertify.get('notifier','position'));
+                    }); </script>";
 
-        // Sleep 2 seconds
-        sleep(2);
-        $stmt = $connection->query("SELECT * FROM tasks WHERE userid='$newid' ORDER BY priorityindex");
-        
-        // header("location: welcome.php");
+            // Sleep 2 seconds
+            sleep(2);
+            $stmt = $connection->query("SELECT * FROM tasks WHERE userid='$newid' ORDER BY priorityindex");
+            
+            // header("location: welcome.php");
 
 
 
-	} catch(PDOException $error) {
-        // if there is an error, tell us what it is
-		echo $sql . "<br>" . $error->getMessage();
-	}	
-}
+        } catch(PDOException $error) {
+            // if there is an error, tell us what it is
+            echo $sql . "<br>" . $error->getMessage();
+        }	
+    }
 
 ?>
 
