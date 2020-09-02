@@ -183,9 +183,10 @@ if (isset($_POST['submit'])) {
 
 <!-- TABLE -->
 <div class="search-box">
-<table class ="info-table">
-        <input type="text" autocomplete="off" placeholder="Search All Tasks" />
+    <input type="text" autocomplete="off" placeholder="Search All Tasks" />
+    <div class="result"></div>
 </div>
+<table class="info-table">
     <thead>
         <tr>
             <th>Task</th>
@@ -196,7 +197,6 @@ if (isset($_POST['submit'])) {
             <th colspan="2">Actions</th>
         </tr>
     </thead>
-    <div class="result"></div>
 <?php
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 ?>
