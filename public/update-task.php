@@ -37,7 +37,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             ];
         
             // create SQL statement
-            $sql = "UPDATE tasks
+            $sql = "UPDATE `tasks`
                     SET taskid = :taskid, 
                         taskname = :taskname, 
                         duedate = :duedate, 
@@ -156,14 +156,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     
     <div class="form-group">
         <label for="notes">Notes</label>
-        <input class="form-control" type="text" name="notes" id="notes" value="<?php echo escape($work['notes']); ?>">
+        <input class="update-input" type="text" name="notes" id="notes" value="<?php echo escape($work['notes']); ?>">
     </div>
 
     <div class="form-group">
         <label for="date">Input Date</label>
-        <input class="form-control" type="text" name="date" id="date" value="<?php echo escape($work['date']); ?>">
+        <input class="update-input" type="text" name="date" id="date" value="<?php echo escape($work['date']); ?>">
     </div>
-
+    
     <input class="update-submit" type="submit" name="submit" value="Save Changes">
 
     <?php if ($msgSuccess): ?>
