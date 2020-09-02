@@ -18,14 +18,16 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     
     //Setting a variable called newid which is based on the session id
     $newid = $_SESSION['id'];
-    
+    $msg = '';
+
+
 	try {
         // FIRST: Connect to the database
         $connection = new PDO($dsn, $username, $password, $options);
 
         // Allows us to query the database and find all the items in the database
         // This however only works for that users data, data input by other users will not show
-        $stmt = $connection->query("SELECT * FROM tasks WHERE userid='$newid'");
+        $stmt = $connection->query("SELECT * FROM tasks WHERE userid='$newid' ORDER BY priorityindex");
 
         // Executing the id 
         $stmt->execute(['id' => $_SESSION['id']]);
@@ -54,22 +56,33 @@ if (isset($_POST['submit'])) {
 	
     // this is called a try/catch statement 
 	try {
-		
+        
+        $postpriority = $_POST['priority'];
+
+        if($postpriority==="High"){
+            $priorityindex = 1;
+        } else if($postpriority==="Medium"){
+            $priorityindex = 2;
+        } else {
+            $priorityindex = 3;
+        };
+
         // SECOND: Get the contents of the form and store it in an array
         $new_task = array( 
             "userid" => $_SESSION["id"],
-            // 
+            // Dont need Taskid as its automatically incremented
             // "taskid" => $_POST["taskid"],
             "taskname" => $_POST['taskname'], 
             "duedate" => $_POST['duedate'],
             "status" => $_POST['status'],
-            // "assignee" => $_POST['assignee'], 
             "priority" => $_POST['priority'], 
+            "priorityindex" => $priorityindex, 
             "notes" => $_POST['notes'], 
         );
         
+
         // THIRD: Turn the array into a SQL statement
-        $sql = "INSERT INTO tasks (userid, taskname, duedate, status, priority, notes) VALUES (:userid, :taskname, :duedate, :status, :priority, :notes)";        
+        $sql = "INSERT INTO tasks (userid, taskname, duedate, status, priority, priorityindex, notes) VALUES (:userid, :taskname, :duedate, :status, :priority, :priorityindex, :notes)";        
         
         // FOURTH: Now write the SQL to the database
         $statement = $connection->prepare($sql);
@@ -78,7 +91,17 @@ if (isset($_POST['submit'])) {
         // Updates the table with the new data
         // $stmt = $connection->query('SELECT * FROM tasks, users WHERE tasks.:userid=users.:id');
         // $stmt = $connection->query("SELECT * FROM tasks WHERE userid=:id");
-        $stmt = $connection->query("SELECT * FROM tasks WHERE userid='$newid'");
+
+        $msgSuccess = "<script> $(function(success) {
+                     alertify.set('notifier','position', 'bottom-right');
+                     alertify.success('Successfully Submitted', 'success', 5 + alertify.get('notifier','position'));
+                 }); </script>";
+
+        // Sleep 2 seconds
+        sleep(2);
+        $stmt = $connection->query("SELECT * FROM tasks WHERE userid='$newid' ORDER BY priorityindex");
+        
+        // header("location: welcome.php");
 
 
 
@@ -91,7 +114,6 @@ if (isset($_POST['submit'])) {
 ?>
 
 
-
 <?php include "templates/header.php"; ?>
 
 <main>
@@ -100,49 +122,72 @@ if (isset($_POST['submit'])) {
 
 <!-- Adding In data -->
 <form method="post" class="welcome-forms">
-    <label for="taskname">Task Name</label>
-    <input class="welcome-input" type="text" name="taskname" id="taskname">
+<!-- <form method="post"> -->
+    <h3> Add a New Task </h3>
 
-    <label for="duedate">Due Date</label>
-    <input class="welcome-input" type="date" name="duedate" id="duedate">
+    <div class="row">
+        <div class="col">
+            <label for="taskname">Task Name</label>
+            <input class="form-control" type="text" name="taskname" id="taskname">
+        </div>
 
-    <br>
+        <div class="col">
+            <label for="duedate">Due Date</label>
+            <input class="form-control" type="date" name="duedate" id="duedate">
+        </div>
+    </div>
 
-    <label for="status">Status</label>
-    <input class="welcome-input" type="text" name="status" id="status">
+    <div class="row">
+        <div class="col">
+            <label for="status">Status</label>
+            <input class="form-control" type="text" name="status" id="status">
+        </div>
 
-    <label for="priority">Priority</label>
-    <!-- <input class="welcome-input" type="text" name="priority" id="priority"> -->
-        <select class="welcome-input" name="priority" id="priority">
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High🔥</option>
+        <div class="col">
+            <label for="priority">Priority</label>
+            <select class="welcome-input" name="priority" id="priority">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High🔥</option>
         </select>
+        </div>
+    </div>
 
-    <br>
+    <div class="row">
+        <div class="col">
+            <label for="notes">Notes</label>
+            <input class="form-control" type="text" name="notes" id="notes">
+        </div>
 
-    <label for="notes">Notes</label>
-    <input class="welcome-input" type="text" name="notes" id="notes">
+    </div>
 
-    <br>
-
-    <input class="create-update-submit" type="submit" name="submit" value="Submit">
+    <input class="create-submit" type="submit" name="submit" value="Submit" >
+    
+    <!-- If form has been submitted then create the success alert -->
+    <?php if ($msgSuccess): ?>
+        <p><?=$msgSuccess?></p>
+    <?php endif; ?>
 
 </form>
 
 
-<?php if (isset($_POST['submit']) && $statement) { ?>
-<p>Task successfully added.</p>
-<?php }?>
+<h3> Your Tasks, Todays Date is <?php echo date("d/m/Y"); ?></h3>
 
-<h3> Your Tasks </h3>
+
+<!-- Testing Search Function -->
+<!-- <div class="search-box">
+        <input type="text" autocomplete="off" placeholder="Search" />
+        <div class="result"></div>
+</div> -->
+
 
 <!-- TABLE -->
+<div class="search-box">
 <table class ="info-table">
+        <input type="text" autocomplete="off" placeholder="Search All Tasks" />
+</div>
     <thead>
         <tr>
-            <th>User ID</th>
-            <th>Task ID</th>
             <th>Task</th>
             <th>Due Date</th>
             <th>Status</th>
@@ -151,26 +196,26 @@ if (isset($_POST['submit'])) {
             <th colspan="2">Actions</th>
         </tr>
     </thead>
+    <div class="result"></div>
 <?php
     while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
-    ?>
-        <tr> 
-            <td><?php echo $row["userid"];?></td>
-            <td><?php echo $row["taskid"];?></td>
+?>
+        <tr class="info-table-row"> 
             <td><?php echo $row["taskname"];?></td>
-            <td><?php echo $row["duedate"];?></td>
+            <td><?php echo date('d/m/Y', strtotime($row["duedate"])); ?></td>
             <td><?php echo $row["status"];?></td>
             <td><?php echo $row["priority"];?></td>
             <td><?php echo $row["notes"];?></td>
-            <td> <a href='update-task.php?taskid=<?php echo $row['taskid']; ?>' class="btn btn-info">Edit</td>
-            <td> <a href="delete.php?taskid=<?php echo $row['taskid']; ?>" class="btn btn-danger">Delete</td>
+            <td> <a href="update-task.php?taskid=<?php echo $row['taskid']; ?>" class="btn btn-info">Edit &#x270E;</td>
+                <!-- Source for Edit Pencil Icon https://www.toptal.com/designers/htmlarrows/symbols/lower-right-pencil/ -->
+            <td> <a href="delete.php?taskid=<?php echo $row['taskid']; ?>" class="btn btn-danger">Done &#10003;</td>
+                <!-- Source for Done Tick Icon https://www.toptal.com/designers/htmlarrows/symbols/check-mark/   -->
         </tr>
     
-    <?php 
-}
-?>
+<?php } ?>
+
+<!-- TEsting the DIV -->
+<!-- </div> -->
 </table>
 
 <?php include "templates/footer.php"; ?>
-

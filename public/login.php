@@ -96,10 +96,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Login - Task Tracker</title>
 
     <!-- Links to CSS -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
     <link rel="stylesheet" href="assets/style.css">
 
+
 </head>
+
 <body>
     <div class="wrapper">
         <h2>Login to Task Tracker</h2>

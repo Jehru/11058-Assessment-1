@@ -8,8 +8,8 @@ CREATE TABLE tasks (
 	taskname VARCHAR(30) NOT NULL,
 	duedate VARCHAR(50) NOT NULL,
 	status VARCHAR(30),
-    assignee VARCHAR(30),
     priority VARCHAR(30),
+    priorityindex INT (30),
     notes VARCHAR(100),
 	date TIMESTAMP
 );

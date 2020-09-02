@@ -34,7 +34,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             ];
             
             // create SQL statement
-            $sql = "UPDATE `tasks` 
+            $sql = "UPDATE 'tasks'
                     SET taskid = :taskid, 
                         taskname = :taskname, 
                         duedate = :duedate, 
@@ -98,43 +98,49 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <?php include "templates/header.php"; ?>
 
-<?php if (isset($_POST['submit']) && $statement) : ?>
-	<p>Task successfully updated.</p>
-<?php
+<?php if (isset($_POST['submit'])) { 
     // Sleep 1 seconds and then send to welcome page and end the if statement
-    sleep(1);
+    sleep(3);
     header("location: welcome.php"); 
-    endif; 
+} 
 ?>
+
+
 <main>
 
 <h2>Edit a work</h2>
 
-<form method="post" class="create-update-forms">
+<form method="post" class="update-forms">
 
     <label for="taskid">Task ID</label>
-    <input class="create-update-input" type="text" name="taskid" id="taskid" value="<?php echo escape($work['taskid']); ?>" >
+    <input class="update-input" type="text" name="taskid" id="taskid" value="<?php echo escape($work['taskid']); ?>" >
     
     <label for="taskname">Task Name</label>
-    <input class="create-update-input" type="text" name="taskname" id="taskname" value="<?php echo escape($work['taskname']); ?>">
+    <input class="update-input" type="text" name="taskname" id="taskname" value="<?php echo escape($work['taskname']); ?>">
 
     <label for="duedate">Due Date</label>
-    <input class="create-update-input" type="text" name="duedate" id="duedate" value="<?php echo escape($work['duedate']); ?>">
+    <input class="update-input" type="date" name="duedate" id="duedate" value="<?php echo ($work['duedate']); ?>">
 
     <label for="status">Status</label>
-    <input class="create-update-input" type="text" name="status" id="status" value="<?php echo escape($work['status']); ?>">
+    <input class="update-input" type="text" name="status" id="status" value="<?php echo escape($work['status']); ?>">
     
     <label for="priority">Priority</label>
-    <input class="create-update-input" type="text" name="priority" id="priority" value="<?php echo escape($work['priority']); ?>">
+
+        <select class="update-input" name="priority" id="priority" value="<?php echo escape($work['priority']); ?>">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High🔥</option>
+        </select>
+
+    <!-- <input class="update-input" type="text" name="priority" id="priority" value="<?php //echo escape($work['priority']); ?>"> -->
     
     <label for="notes">Notes</label>
-    <input class="create-update-input" type="text" name="notes" id="notes" value="<?php echo escape($work['notes']); ?>">
-    
+    <input class="update-input" type="text" name="notes" id="notes" value="<?php echo escape($work['notes']); ?>">
 
     <label for="date">Input Date</label>
-    <input class="create-update-input" type="text" name="date" id="date" value="<?php echo escape($work['date']); ?>">
+    <input class="update-input" type="text" name="date" id="date" value="<?php echo escape($work['date']); ?>">
 
-    <input class="create-update-submit" type="submit" name="submit" value="Save">
+    <input class="update-submit" type="submit" name="submit" value="Save Changes">
 
 </form>
 

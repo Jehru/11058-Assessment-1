@@ -28,7 +28,10 @@ h2, h3 {
     font-size: 20px;
     font-weight: bold;
     text-align: center;
+    margin-bottom: 40px;
 }
+
+
 
 b {
     font-weight: bold;
@@ -38,17 +41,9 @@ b {
 .btn {
     display: inline-block;
     padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
     font-weight: normal;
-    line-height: 1.42857143;
     text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    touch-action: manipulation;
     cursor: pointer;
-    user-select: none;
-    background-image: none;
     border: 1px solid transparent;
     border-radius: 4px;
 }
@@ -78,6 +73,10 @@ border-color: #4cae4c;
 }
 
 
+
+/* ADD IN HOVER PSEDUOCLASSES */
+
+
 /* OTHER */
 .wrapper { 
     width: 30%;
@@ -88,9 +87,13 @@ border-color: #4cae4c;
 }
 
 .main-header {
-    margin: 10% auto;
+    margin: 90px auto;
     text-align: center;
 }
+
+    #home{
+        margin: 20px;
+    }
 
 .info-table{
     border-collapse: collapse;
@@ -99,7 +102,8 @@ border-color: #4cae4c;
 }
 
 th, td {
-    border: 1px solid black;
+    border-bottom: 1px solid #ddd;
+    /* border: 1px solid black; */
     padding: 15px;
 }
 
@@ -112,11 +116,11 @@ footer {
 /* Forms in Create & Edit page */
 
 
-.create-update-forms {
+.update-forms {
     margin: 0 30%;
 }
 
-.create-update-input {
+.update-input {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -132,9 +136,9 @@ footer {
 
 .welcome-forms {
     /* display: inline-block; */
-    /* background-color: blue; */
-    margin: 50px 10%;
-    text-align: center;
+    /* background-color: lightgrey; */
+    margin: 50px 20%;
+    /* padding: 30px; */
 }
 
 .welcome-input {
@@ -147,6 +151,10 @@ footer {
     border-radius: 4px;
     box-sizing: border-box;
 }
+
+.welcome-input:focus {
+    border: 3px solid #555;
+  }
 
 /* Login/Registation Page Form */
 
@@ -183,14 +191,13 @@ footer {
 label {
     display: inline-block;
     max-width: 100%;
-    margin-bottom: 5px;
+    /* margin-bottom: 5px; */
     font-weight: bold;
 }
 
 /* Changing the Submit button */
 
-.create-update-submit {
-    width: 60%;
+.create-submit {
     background-color: #4CAF50;
     color: white;
     padding: 14px 20px;
@@ -199,25 +206,56 @@ label {
     border-radius: 4px;
     cursor: pointer;
 }
-.create-update-submit:hover {
+.create-submit:hover {
+    background-color: #45a049;
+  }
+
+
+.update-submit {
+    width: 60%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 0 20%;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.update-submit:hover {
     background-color: #45a049;
   }
 
   /* Select Priority Tags */
-  select option {
+select option {
     color: #fff;
   }
   
-  select option[value="low"] {
+  select option[value="Low"] {
     background: #86dd86 ;
   }
   
-  select option[value="medium"] {
+  select option[value="Medium"] {
     background: #E0AC69;
   }
   
-  select option[value="high"] {
+  select option[value="High"] {
     background: #fc4c4e ;
   }
   
+.search-box {
+    margin: 0 30%;
+}
+
+.result {
+ margin:0px 20% 50px 20%
+}
+
+.search-box input{
+    width: 30%; /* Full-width */
+    /* float: right; */
+    display: inline-block;
+    padding: 12px 20px 12px 40px; /* Add some padding */
+    border: 1px solid #ddd; /* Add a grey border */
+    margin-bottom: 12px; /* Add some space below the input */
+  }
   
