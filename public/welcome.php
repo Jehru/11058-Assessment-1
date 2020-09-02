@@ -18,7 +18,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     
     //Setting a variable called newid which is based on the session id
     $newid = $_SESSION['id'];
-    $msg = '';
+    $msgSuccess = '';
 
 
 	try {
@@ -145,7 +145,7 @@ if (isset($_POST['submit'])) {
 
         <div class="col">
             <label for="priority">Priority</label>
-            <select class="welcome-input" name="priority" id="priority">
+            <select class="form-control" name="priority" id="priority">
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
                 <option value="High">High🔥</option>

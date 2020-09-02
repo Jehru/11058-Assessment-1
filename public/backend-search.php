@@ -28,19 +28,17 @@ try{
         if($stmt->rowCount() > 0){
 
                 echo "<thead>" . "<tr>" . "<th>" . "Task" . "</th>";
-                // echo "<th>" . "Due Date" . "</th>";
-                // echo  "<th>" . "Status" . "</th>";
-                // echo  "<th>" . "Priority" . "</th>";
+                echo "<th>" . "Due Date" . "</th>";
+                echo  "<th>" . "Status" . "</th>";
+                echo  "<th>" . "Priority" . "</th>";
                 echo  "<th>" . "Notes" . "</th>" . "</tr>" . "</thead>";
 
             while($row = $stmt->fetch()){
                 echo "<tr>" . "<td>" . $row["taskname"] . "</td>";
-                // echo "<td>" . $row["taskname"] . "</td>";
-                // echo "<td>" . $row["duedate"] . "</td>";
-                // echo "<td>" . $row["status"] . "</td>";
-                // echo "<td>" . $row["priority"] . "</td>";
+                echo "<td>" . $row["duedate"] . "</td>";
+                echo "<td>" . $row["status"] . "</td>";
+                echo "<td>" . $row["priority"] . "</td>";
                 echo "<td>" . $row["notes"] . "</td>" . "</tr>";
-                //  echo "<td>" . $row["notes"] . "</td>";
 
             }
         } else{

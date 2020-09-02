@@ -105,4 +105,4 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 <!-- Returns to welcome page after the thing has been deleted -->
 <!-- This one happens instantaneous as we want to simiulate it happening 
     on the welcome instead of it routing to another page  -->
-<?php header("location: welcome.php"); ?>
+<?php //header("location: welcome.php"); ?>

@@ -15,6 +15,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     require "../config.php";
     require "common.php";
 
+    $newid = $_SESSION['id'];
+    $msgSuccess = '';
+
 
     // Run when submit button is clicked
     if (isset($_POST['submit'])) {
@@ -32,9 +35,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 "notes"    => $_POST['notes'],
                 "date"     => $_POST['date'],
             ];
-            
+        
             // create SQL statement
-            $sql = "UPDATE 'tasks'
+            $sql = "UPDATE tasks
                     SET taskid = :taskid, 
                         taskname = :taskname, 
                         duedate = :duedate, 
@@ -50,6 +53,13 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             //execute sql statement
             $statement->execute($work);
 
+            $msgSuccess = "<script> $(function(success) {
+                alertify.set('notifier','position', 'bottom-right');
+                alertify.success('Successfully Updated', 'success', 5 + alertify.get('notifier','position'));
+            }); </script>";
+
+            // sleep(6);
+            // header("location: welcome.php");
 
         } catch(PDOException $error) {
             echo $sql . "<br>" . $error->getMessage();
@@ -70,7 +80,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             
             //select statement to get the right data
             // $sql = "SELECT * FROM tasks WHERE taskid = :taskid";
-            $sql = "SELECT * FROM tasks WHERE userid=" . $_SESSION['id'];
+            $sql = "SELECT * FROM tasks WHERE userid='$newid'";
 
             // prepare the connection
             $statement = $connection->prepare($sql);
@@ -98,49 +108,67 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 <?php include "templates/header.php"; ?>
 
-<?php if (isset($_POST['submit'])) { 
+<?php //if (isset($_POST['submit'])) { 
     // Sleep 1 seconds and then send to welcome page and end the if statement
-    sleep(3);
-    header("location: welcome.php"); 
-} 
+
+    //echo "isset post submit";
+//} 
 ?>
 
 
-<main>
+<main class="wrapper-update">
 
 <h2>Edit a work</h2>
 
-<form method="post" class="update-forms">
+<!-- <form method="post" class="update-forms"> -->
+    <form method="post">
 
-    <label for="taskid">Task ID</label>
-    <input class="update-input" type="text" name="taskid" id="taskid" value="<?php echo escape($work['taskid']); ?>" >
-    
-    <label for="taskname">Task Name</label>
-    <input class="update-input" type="text" name="taskname" id="taskname" value="<?php echo escape($work['taskname']); ?>">
+    <div class="form-group">
+        <label for="taskid">Task ID</label>
+        <input class="form-control" type="text" name="taskid" id="taskid" value="<?php echo escape($work['taskid']); ?>" >
+    </div>
 
-    <label for="duedate">Due Date</label>
-    <input class="update-input" type="date" name="duedate" id="duedate" value="<?php echo ($work['duedate']); ?>">
+    <div class="form-group">
+        <label for="taskname">Task Name</label>
+        <input class="form-control" type="text" name="taskname" id="taskname" value="<?php echo escape($work['taskname']); ?>">
+    </div>
 
-    <label for="status">Status</label>
-    <input class="update-input" type="text" name="status" id="status" value="<?php echo escape($work['status']); ?>">
-    
+    <div class="form-group">
+        <label for="duedate">Due Date</label>
+        <input class="form-control" type="date" name="duedate" id="duedate" value="<?php echo ($work['duedate']); ?>">
+    </div>
+
+    <div class="form-group">
+        <label for="status">Status</label>
+        <input class="form-control" type="text" name="status" id="status" value="<?php echo escape($work['status']); ?>">
+    </div>
+
+    <div class="form-group">
     <label for="priority">Priority</label>
-
-        <select class="update-input" name="priority" id="priority" value="<?php echo escape($work['priority']); ?>">
+        <select class="form-control" name="priority" id="priority" value="<?php echo escape($work['priority']); ?>">
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
                 <option value="High">High🔥</option>
         </select>
+    </div>
 
     <!-- <input class="update-input" type="text" name="priority" id="priority" value="<?php //echo escape($work['priority']); ?>"> -->
     
-    <label for="notes">Notes</label>
-    <input class="update-input" type="text" name="notes" id="notes" value="<?php echo escape($work['notes']); ?>">
+    <div class="form-group">
+        <label for="notes">Notes</label>
+        <input class="form-control" type="text" name="notes" id="notes" value="<?php echo escape($work['notes']); ?>">
+    </div>
 
-    <label for="date">Input Date</label>
-    <input class="update-input" type="text" name="date" id="date" value="<?php echo escape($work['date']); ?>">
+    <div class="form-group">
+        <label for="date">Input Date</label>
+        <input class="form-control" type="text" name="date" id="date" value="<?php echo escape($work['date']); ?>">
+    </div>
 
     <input class="update-submit" type="submit" name="submit" value="Save Changes">
+
+    <?php if ($msgSuccess): ?>
+        <p><?=$msgSuccess?></p>
+    <?php endif; ?>
 
 </form>
 
