@@ -15,10 +15,17 @@ require "common.php";
 
 // Creating a varible for the users session ID
 $newid = $_SESSION['id'];
-// Create an empty variable which will be used for the success messages
-$msgSuccess = '';
+// Create an empty variable which will be used for the success or error messages
+$msg_notifier = '';
+
+// Setting empty variables which are used to make sure the user has inputted information when they click submit
+$taskname = $taskname_err = '';
+$duedate = $duedate_err = '';
+$status = $status_err = '';
+$notes = $notes_err = '';
 
 
+// READ
 // READS the database
 try {
     // Create a PDO connection which connects to the database
@@ -38,61 +45,89 @@ try {
     echo $stmt . "<br>" . $error->getMessage();
 }	
 
+// CREATE
 // CREATES new data (if user clicks submit)
 if (isset($_POST['submit'])) {
+
+    // Sets variables based on the information in the form
+    $taskname = $_POST['taskname'];
+    $duedate = $_POST['duedate'];
+    $status = $_POST['status'];
+    $notes = $_POST['notes'];
+
+    // Check if variables were actually placed in the forms. 'empty' variables were causing errors to delete so its better to have them full.
+    if((!empty($taskname)) && (!empty($duedate)) && (!empty($status)) && (!empty($notes))){
+        // If the forms are properly filled out
+
+        // Try and upload the data found in the forms
+        try {
+
+            // header ("location: delete.php")
+            // Create a PDO connection which connects to the database
+            $connection = new PDO($dsn, $username, $password, $options);
+            
+            // Create a variable called postpriority which is a numerical value for High, Medium or Low which is used to create a hierarchy 
+            $postpriority = $_POST['priority'];
+
+            // Associates high priority with a priority index of 1, medium priority with 2 and low with 3. This is used to create an order.
+            if($postpriority==="High"){
+                $priorityindex = 1;
+            } else if($postpriority==="Medium"){
+                $priorityindex = 2;
+            } else {
+                $priorityindex = 3;
+            };
+
+            // Get the components of the form and store it in an Array
+            $new_task = array( 
+                "userid" => $_SESSION["id"],
+                // Dont need Taskid as its automatically incremented
+                // "taskid" => $_POST["taskid"],
+                "taskname" => $_POST['taskname'], 
+                "duedate" => $_POST['duedate'],
+                "status" => $_POST['status'],
+                "priority" => $_POST['priority'], 
+                "priorityindex" => $priorityindex, 
+                "notes" => $_POST['notes'], 
+            );
+        
+            // Turn the Array into an SQL statment which is stored in SQL values
+            $sql = "INSERT INTO tasks (userid, taskname, duedate, status, priority, priorityindex, notes) VALUES (:userid, :taskname, :duedate, :status, :priority, :priorityindex, :notes)";        
+            
+            // Write the information to the database
+            $statement = $connection->prepare($sql);
+            $statement->execute($new_task);
+
+            // Create a green success message using Alertify JS 
+            $msg_notifier = "<script> $(function(success) {
+                        alertify.set('notifier','position', 'bottom-right');
+                        alertify.success('Successfully Submitted', 'success', 5 + alertify.get('notifier','position'));
+                    }); </script>";
+
+
+            // Read from the database, similar to above (This just 'updates' the form after new data has been submitted) 
+            $stmt = $connection->query("SELECT * FROM tasks WHERE userid='$newid' ORDER BY priorityindex");
+        
+        } catch(PDOException $error) {
+            // If there is an error, tell us what it is
+            echo $sql . "<br>" . $error->getMessage();
+        }
+
+    }else {
+        // Error messages underneath each form
+        $taskname_err = "Please enter taskname.";
+        $duedate_err = "Please enter duedate.";
+        $status_err = "Please enter status.";
+        $notes_err = "Please enter notes.";
+
+        // Create a red error message using Alertify JS 
+        $msg_notifier = "<script> $(function(success) {
+            alertify.set('notifier','position', 'bottom-right');
+            alertify.error('Error please fill out forms', 'success', 5 + alertify.get('notifier','position'));
+        }); </script>";
     
-    // Try and upload the data found in the forms
-    try {
-        
-        // Create a variable called postpriority which is a numerical value for High, Medium or Low which is used to create a hierarchy 
-        $postpriority = $_POST['priority'];
+    }
 
-        // Associates high priority with a priority index of 1, medium priority with 2 and low with 3. This is used to create an order.
-        if($postpriority==="High"){
-            $priorityindex = 1;
-        } else if($postpriority==="Medium"){
-            $priorityindex = 2;
-        } else {
-            $priorityindex = 3;
-        };
-
-        // Get the components of the form and store it in an Array
-        $new_task = array( 
-            "userid" => $_SESSION["id"],
-            // Dont need Taskid as its automatically incremented
-            // "taskid" => $_POST["taskid"],
-            "taskname" => $_POST['taskname'], 
-            "duedate" => $_POST['duedate'],
-            "status" => $_POST['status'],
-            "priority" => $_POST['priority'], 
-            "priorityindex" => $priorityindex, 
-            "notes" => $_POST['notes'], 
-        );
-        
-
-        // Turn the Array into an SQL statment which is stored in SQL values
-        $sql = "INSERT INTO tasks (userid, taskname, duedate, status, priority, priorityindex, notes) VALUES (:userid, :taskname, :duedate, :status, :priority, :priorityindex, :notes)";        
-        
-        // Write the information to the database
-        $statement = $connection->prepare($sql);
-        $statement->execute($new_task);
-
-        // Create a green success message using Alertify JS 
-        $msgSuccess = "<script> $(function(success) {
-                    alertify.set('notifier','position', 'bottom-right');
-                    alertify.success('Successfully Submitted', 'success', 5 + alertify.get('notifier','position'));
-                }); </script>";
-
-        // Sleep for 2 seconds
-        sleep(2);
-
-        // Read from the database, similar to above (This just 'updates' the form after new data has been submitted) 
-        $stmt = $connection->query("SELECT * FROM tasks WHERE userid='$newid' ORDER BY priorityindex");
-        
-    } catch(PDOException $error) {
-        // If there is an error, tell us what it is
-        echo $sql . "<br>" . $error->getMessage();
-    }	
 }
 
 ?>
@@ -115,12 +150,14 @@ if (isset($_POST['submit'])) {
         <div class="row">
             <div class="col">
                 <label for="taskname">Task Name</label>
-                <input class="form-control" type="text" name="taskname" id="taskname">
+                <input class="form-control has-error" type="text" name="taskname" id="taskname">
+                <span class="help-block"><?php echo $taskname_err; ?></span>
             </div>
 
             <div class="col">
                 <label for="duedate">Due Date</label>
                 <input class="form-control" type="date" name="duedate" id="duedate">
+                <span class="help-block"><?php echo $duedate_err; ?></span>
             </div>
         </div>
 
@@ -128,6 +165,8 @@ if (isset($_POST['submit'])) {
             <div class="col">
                 <label for="status">Status</label>
                 <input class="form-control" type="text" name="status" id="status">
+                <span class="help-block"><?php echo $status_err; ?></span>
+
             </div>
 
             <div class="col">
@@ -144,6 +183,7 @@ if (isset($_POST['submit'])) {
             <div class="col">
                 <label for="notes">Notes</label>
                 <input class="form-control" type="text" name="notes" id="notes">
+                <span class="help-block"><?php echo $notes_err; ?></span>
             </div>
 
         </div>
@@ -151,8 +191,8 @@ if (isset($_POST['submit'])) {
         <input class="create-submit" type="submit" name="submit" value="Submit" >
         
         <!--If the form has been sumbitted then send the AlertifyJS success message mentioned above-->
-        <?php if ($msgSuccess): ?>
-            <p><?=$msgSuccess?></p>
+        <?php if ($msg_notifier): ?>
+            <p><?=$msg_notifier?></p>
         <?php endif; ?>
 
     </form>

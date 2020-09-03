@@ -15,54 +15,85 @@ require "common.php";
 
 // Create a variable for newid and the success message. These will be used later.
 $newid = $_SESSION['id'];
-$msgSuccess = '';
+$msg_notifier = '';
 
+// Setting empty variables which are used to make sure the user has inputted information when they click submit
+$taskname = $taskname_err = '';
+$duedate = $duedate_err = '';
+$status = $status_err = '';
+$notes = $notes_err = '';
 
 // Updates the new information
 // Run when submit button is clicked
 if (isset($_POST['submit'])) {
-    try {
 
-        // Create a PDO connection which connects to the database
-        $connection = new PDO($dsn, $username, $password, $options);  
-        
-        // Get the elements from the forms and set them as variables
-        $work =[
-            "taskid"   => $_POST['taskid'],
-            "taskname" => $_POST['taskname'],
-            "duedate"  => $_POST['duedate'],
-            "status"   => $_POST['status'],
-            "priority" => $_POST['priority'],
-            "notes"    => $_POST['notes'],
-        ];
- 
-        // Create SQL statement. Which updates the information into tasks 
-        $sql = "UPDATE tasks
-                SET taskid = :taskid, 
-                    taskname = :taskname, 
-                    duedate = :duedate, 
-                    status = :status, 
-                    priority = :priority, 
-                    notes = :notes 
-                WHERE taskid = :taskid";
+    // Sets variables based on the information in the form
+    $taskname = $_POST['taskname'];
+    $duedate = $_POST['duedate'];
+    $status = $_POST['status'];
+    $notes = $_POST['notes'];
 
-        // Prepare the SQL statement
-        $statement = $connection->prepare($sql);
+      // Check if variables were actually placed in the forms. 'empty' variables were causing errors to delete so its better to have them full.
+    if((!empty($taskname)) && (!empty($duedate)) && (!empty($status)) && (!empty($notes))){
+        // If the forms are properly filled out
 
-        // Execute the SQL statement
-        $statement->execute($work);
+        // Try and upload the data found in the forms
+        try {
+            // Create a PDO connection which connects to the database
+            $connection = new PDO($dsn, $username, $password, $options);  
+            
+            // Get the elements from the forms and set them as variables
+            $work =[
+                "taskid"   => $_POST['taskid'],
+                "taskname" => $_POST['taskname'],
+                "duedate"  => $_POST['duedate'],
+                "status"   => $_POST['status'],
+                "priority" => $_POST['priority'],
+                "notes"    => $_POST['notes'],
+            ];
+    
+            // Create SQL statement. Which updates the information into tasks 
+            $sql = "UPDATE tasks
+                    SET taskid = :taskid, 
+                        taskname = :taskname, 
+                        duedate = :duedate, 
+                        status = :status, 
+                        priority = :priority, 
+                        notes = :notes 
+                    WHERE taskid = :taskid";
 
-        // Create a green success message using Alertify JS 
-        $msgSuccess = "<script> $(function(success) {
+            // Prepare the SQL statement
+            $statement = $connection->prepare($sql);
+
+            // Execute the SQL statement
+            $statement->execute($work);
+
+            // Create a green success message using Alertify JS 
+            $msg_notifier = "<script> $(function(success) {
+                alertify.set('notifier','position', 'bottom-right');
+                alertify.success('Successfully Updated', 'success', 5 + alertify.get('notifier','position'));
+            }); </script>";
+
+
+        } catch(PDOException $error) {
+            // If there is an error tell us what it is
+            echo $sql . "<br>" . $error->getMessage();
+        }
+
+    } else {
+        // Error messages underneath each form
+        $taskname_err = "Please enter taskname.";
+        $duedate_err = "Please enter duedate.";
+        $status_err = "Please enter status.";
+        $notes_err = "Please enter notes.";
+
+        // Create a red error message using Alertify JS 
+        $msg_notifier = "<script> $(function(success) {
             alertify.set('notifier','position', 'bottom-right');
-            alertify.success('Successfully Updated', 'success', 5 + alertify.get('notifier','position'));
+            alertify.error('Error please fill out forms', 'success', 5 + alertify.get('notifier','position'));
         }); </script>";
-
-
-    } catch(PDOException $error) {
-        // If there is an error tell us what it is
-        echo $sql . "<br>" . $error->getMessage();
     }
+
 }
 
 
@@ -125,16 +156,19 @@ if (isset($_GET['taskid'])) {
     <div class="form-group">
         <label for="taskname">Task Name</label>
         <input class="form-control" type="text" name="taskname" id="taskname" value="<?php echo escape($work['taskname']); ?>">
+        <span class="help-block"><?php echo $taskname_err; ?></span>
     </div>
 
     <div class="form-group">
         <label for="duedate">Due Date</label>
         <input class="form-control" type="date" name="duedate" id="duedate" value="<?php echo ($work['duedate']); ?>">
+        <span class="help-block"><?php echo $duedate_err; ?></span>
     </div>
 
     <div class="form-group">
         <label for="status">Status</label>
         <input class="form-control" type="text" name="status" id="status" value="<?php echo escape($work['status']); ?>">
+        <span class="help-block"><?php echo $status_err; ?></span>
     </div>
 
     <div class="form-group">
@@ -149,14 +183,15 @@ if (isset($_GET['taskid'])) {
     <div class="form-group">
         <label for="notes">Notes</label>
         <input class="form-control" type="text" name="notes" id="notes" value="<?php echo escape($work['notes']); ?>">
+        <span class="help-block"><?php echo $notes_err; ?></span>
     </div>
     
     <!-- Submit button -->
     <input class="update-submit" type="submit" name="submit" value="Save Changes">
 
     <!--If the form has been sumbitted then send the AlertifyJS success message mentioned above-->
-    <?php if ($msgSuccess): ?>
-        <p><?=$msgSuccess?></p>
+    <?php if ($msg_notifier): ?>
+        <p><?=$msg_notifier?></p>
     <?php endif; ?>
 </form>
 

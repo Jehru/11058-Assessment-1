@@ -16,7 +16,7 @@ require "common.php";
 // Creating a varible for the users session ID
 $newid = $_SESSION['id'];
 // Create an empty variable which will be used for the success messages
-$msgSuccess = '';
+$msg_notifier = '';
 
 
 // Deletes the information
@@ -43,7 +43,7 @@ if (isset($_GET["taskid"])) {
         $statement->execute();
 
         // Create a green success message using Alertify JS 
-        $msgSuccess = "<script> $(function(success) {
+        $msg_notifier = "<script> $(function(success) {
             alertify.set('notifier','position', 'bottom-right');
             alertify.success('Successfully Updated', 'success', 5 + alertify.get('notifier','position'));
         }); </script>";
