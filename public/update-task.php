@@ -34,7 +34,6 @@ if (isset($_POST['submit'])) {
             "status"   => $_POST['status'],
             "priority" => $_POST['priority'],
             "notes"    => $_POST['notes'],
-            "date"     => $_POST['date'],
         ];
  
         // Create SQL statement. Which updates the information into tasks 
@@ -44,13 +43,12 @@ if (isset($_POST['submit'])) {
                     duedate = :duedate, 
                     status = :status, 
                     priority = :priority, 
-                    notes = :notes, 
-                    date = :date 
+                    notes = :notes 
                 WHERE taskid = :taskid";
 
         // Prepare the SQL statement
         $statement = $connection->prepare($sql);
-        
+
         // Execute the SQL statement
         $statement->execute($work);
 
@@ -120,7 +118,7 @@ if (isset($_GET['taskid'])) {
 <!-- Uses bootstrap class names  -->
 <form method="post">
     <div class="form-group">
-        <label for="taskid">Task ID</label>
+        <label for="taskid" >Task ID</label>
         <input class="form-control" type="text" name="taskid" id="taskid" value="<?php echo escape($work['taskid']); ?>" >
     </div>
 
@@ -152,12 +150,7 @@ if (isset($_GET['taskid'])) {
         <label for="notes">Notes</label>
         <input class="form-control" type="text" name="notes" id="notes" value="<?php echo escape($work['notes']); ?>">
     </div>
-
-    <div class="form-group">
-        <label for="date">Input Date</label>
-        <input class="form-control" type="text" name="date" id="date" value="<?php echo escape($work['date']); ?>">
-    </div>
-
+    
     <!-- Submit button -->
     <input class="update-submit" type="submit" name="submit" value="Save Changes">
 

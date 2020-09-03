@@ -20,7 +20,6 @@ $msgSuccess = '';
 
 
 // READS the database
-
 try {
     // Create a PDO connection which connects to the database
     $connection = new PDO($dsn, $username, $password, $options);
