@@ -6,7 +6,8 @@ body {
 h1 {
     font-size: 36px;
     font-weight: normal;
-}
+    margin-bottom: 2.5rem;
+}   
 
 h2, h3 {
     font-size: 20px;
@@ -31,9 +32,21 @@ h2, h3 {
 
 /* Used in the header for the welcome and the update page */
 .main-header {
-    margin: 90px auto;
+    margin: 130px 29%;
     text-align: center;
 }
+
+/* Home button on the left */
+.left-home {
+    float: left;
+}
+
+/* Reset and Logout */
+.right-home {
+    float: right;
+    margin-right: 5px;
+}
+
 
 footer {
     text-align: center;
@@ -73,11 +86,11 @@ select option {
   
   select option[value="High"] {
     background: #fc4c4e ;
-  }
+}
 
 
 
-
+/* ------------ */
 /* WELCOME PAGE */
 /* Welcome page table, set it in the center */
 .info-table{
@@ -118,8 +131,9 @@ select option {
 }
   
 
+/* ----------- */
 /* UPDATE PAGE */
-
+/* Update submit forms */
 .update-submit {
     width: 60%;
     background-color: #4CAF50;

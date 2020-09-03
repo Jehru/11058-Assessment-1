@@ -94,10 +94,12 @@ if (isset($_GET['taskid'])) {
         $work = $statement->fetch(PDO::FETCH_ASSOC);
                 
     } catch(PDOExcpetion $error) {
+        
+        // If there is an error, tell us what it is
         echo $sql . "<br>" . $error->getMessage();
     }
 } else {
-    // no id, show error
+    // No id, show error
     echo "No Task id - something went wrong";
     exit;
 }

@@ -35,7 +35,7 @@ try {
     // $stmt->bindParam(':userid', $newid);
 
 } catch(PDOException $error) {
-    // if there is an error, tell us what it is
+    // If there is an error, tell us what it is
     echo $stmt . "<br>" . $error->getMessage();
 }	
 
@@ -91,7 +91,7 @@ if (isset($_POST['submit'])) {
         $stmt = $connection->query("SELECT * FROM tasks WHERE userid='$newid' ORDER BY priorityindex");
         
     } catch(PDOException $error) {
-        // if there is an error, tell us what it is
+        // If there is an error, tell us what it is
         echo $sql . "<br>" . $error->getMessage();
     }	
 }
