@@ -85,7 +85,7 @@ try {
 <?php include "templates/header.php"; ?>
 
 <!-- Title for delete page -->
-<h2>Delete a user</h2>
+<h2>Delete a Task</h2>
 
 <!-- This is a loop, which will loop through each result in the array -->
 <!-- Creates a little card which shows each of the elements in the database -->
